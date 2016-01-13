@@ -159,7 +159,8 @@ class BaseHandler(tornado.web.RequestHandler):
             #     template = self.LOOK_UP.get_template(filename)
             # else:
             #     template = self.LOOK_UP_MOBILE.get_template(filename)
-            cms = 'http://cms.bidongwifi.com/'
+            # cms = 'http://cms.bidongwifi.com/'
+            cms = settings['cms']
             template = self.LOOK_UP.get_template(filename)
             env_kwargs = dict(
                 handler = self,
@@ -599,7 +600,7 @@ def main():
     logger = trace.logger('niot', False)
     logger.setLevel(logging.INFO)
 
-    niot_pid = os.path.join(settings['LOG_NIOT_PATH'], 'p_{}.pid'.format(options.port))
+    niot_pid = os.path.join(settings['RUN_PATH'], 'p_{}.pid'.format(options.port))
     with open(niot_pid, 'w') as f:
         f.write('{}'.format(os.getpid()))
 
