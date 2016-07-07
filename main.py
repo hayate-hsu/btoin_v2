@@ -171,7 +171,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 static_url = self.static_url,
                 xsrf_form_html = self.xsrf_form_html,
                 reverse_url = self.application.reverse_url,
-                cms = cms,
+                cms = cms.replace('http', self.request.protocol),
             )
             env_kwargs.update(kwargs)
             return template.render(**env_kwargs)
