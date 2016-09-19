@@ -351,7 +351,7 @@ class MainHandler(BaseHandler):
         # query notify
         notices = message.get_messages(NIOT, 2, 0, 2, '', 0, 5)
         
-        logger.info('notices: {}'.format(notices))
+        # logger.info('notices: {}'.format(notices))
 
         # identify
         ids = message.get_messages(NIOT, 2, 0, 1, '', 0, 6)
@@ -372,7 +372,7 @@ class MessageHandler(BaseHandler):
         '''
             get special news
         '''
-        logger.info(self.request)
+        # logger.info(self.request)
         record = message.get_message(_id)
 
         self.render('newsdetail.html', message=record)
