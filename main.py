@@ -147,6 +147,16 @@ class BaseHandler(tornado.web.RequestHandler):
             values.append(v)
         return values
 
+    def _cms(self, uri):
+        if uri.startswith('http'):
+            return uri
+        cms = settings['cms']
+        cms = cms.replace('http', self.request.protocol)
+
+        return cms + uri
+
+
+
     def render_string(self, filename, **kwargs):
         '''
             Override render_string to use mako template.
@@ -159,7 +169,6 @@ class BaseHandler(tornado.web.RequestHandler):
             # else:
             #     template = self.LOOK_UP_MOBILE.get_template(filename)
             # cms = 'http://cms.bidongwifi.com/'
-            cms = settings['cms']
             template = self.LOOK_UP.get_template(filename)
             env_kwargs = dict(
                 handler = self,
@@ -170,7 +179,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 static_url = self.static_url,
                 xsrf_form_html = self.xsrf_form_html,
                 reverse_url = self.application.reverse_url,
-                cms = cms.replace('http', self.request.protocol),
+                cms = self._cms,
             )
             env_kwargs.update(kwargs)
             return template.render(**env_kwargs)
