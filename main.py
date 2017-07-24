@@ -125,12 +125,11 @@ class BaseHandler(tornado.web.RequestHandler):
         '''
         pass
 
-    # def on_finish(self):
-    #     '''
-    #     '''
-    #     logger.info('on_finish')
-    #     # self.set_header('Access-Control-Allow-Origin', 'http://183.63.152.237:8180')
-    #     self.set_header('Access-Control-Allow-Origin', '*')
+    def on_finish(self):
+        '''
+        '''
+        # self.set_header('Access-Control-Allow-Origin', 'http://183.63.152.237:8180')
+        self.set_header('Access-Control-Allow-Origin', '*')
 
     def get_arguments(self, name, strip=True):
         assert isinstance(strip, bool)
@@ -349,16 +348,16 @@ class MainHandler(BaseHandler):
     @_trace_wrapper
     def get(self):
         # query notify
-        notices = message.get_messages(NIOT, 2, 0, 2, '', 0, 5)
+        notices = message.get_messages(NIOT, 0, 0, 2, '', 0, 5)
         
         # logger.info('notices: {}'.format(notices))
 
         # identify
-        ids = message.get_messages(NIOT, 2, 0, 1, '', 0, 6)
+        ids = message.get_messages(NIOT, 0, 0, 1, '', 0, 6)
         # logger.info('ids: {}'.format(ids))
 
         # news 
-        news = message.get_messages(NIOT, 2, 0, 3, '', 0, 10)
+        news = message.get_messages(NIOT, 0, 0, 3, '', 0, 10)
         # logger.info('news: {}'.format(news))
 
         
@@ -428,7 +427,7 @@ class PageHandler(BaseHandler):
     def render_news(self, page):
         '''
         '''
-        news = message.get_messages(NIOT, 2, 0, 3, '', 0, 20)
+        news = message.get_messages(NIOT, 0, 0, 3, '', 0, 20)
 
         self.render('news.html', news=news)
 
@@ -436,18 +435,18 @@ class PageHandler(BaseHandler):
         _id = self.get_argument('id')
         _message = message.get_message(_id)
         
-        news = message.get_messages(NIOT, 2, 0, 3, '', 0, 5)
+        news = message.get_messages(NIOT, 0, 0, 3, '', 0, 5)
         if message:
             self.render('newsdetail.html', _message=_message, news=news)
         else:
             self.render('news.html', news=news)
 
     def render_nameinfo(self, page):
-        ids = message.get_messages(NIOT, 2, 0, 1, '', 0, 20)
+        ids = message.get_messages(NIOT, 0, 0, 1, '', 0, 20)
         self.render('nameinfo.html', ids=ids)
 
     def render_notices(self, page):
-        notices = message.get_messages(NIOT, 2, 0, 2, '', 0, 20)
+        notices = message.get_messages(NIOT, 0, 0, 2, '', 0, 20)
         self.render('notices.html', notices=notices)
 
 

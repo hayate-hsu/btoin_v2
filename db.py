@@ -107,8 +107,8 @@ class Store():
             get special message
         '''
         with Cursor(self.dbpool) as cur:
-            sql = '''select message.*, section.name as section from message, section 
-            where message.id="{}" and message.section = section.id'''.format(_id)
+            sql = '''select message.* from message
+            where message.id="{}"'''.format(_id)
             cur.execute(sql)
             return cur.fetchone()
 
@@ -130,14 +130,14 @@ class Store():
             label = " and label like'%{}%'".format(label) if label else ''
 
             if mask:
-                sql = '''select {}, section.name as section from message, section 
+                sql = '''select {} from message
                 where {}{}message.groups = {} and message.mask & {} = {} and 
-                message.section = section.id order by message.status desc, message.ctime desc limit {},{}
+                order by message.status desc, message.ctime desc limit {},{}
                 '''.format(filters, gmtype, isimg, groups, __MASK__, mask, pos, nums)
             else:
                 # doesn't check message type
-                sql = '''select {}, section.name as section from message, section 
-                where {}{}message.groups = {} and message.section = section.id{} 
+                sql = '''select {} from message 
+                where {}{}message.groups = {} {} 
                 order by message.status desc, message.ctime desc limit {},{}
                 '''.format(filters, gmtype, isimg, groups, label, pos, nums)
 
@@ -155,9 +155,9 @@ class Store():
             # isimg = 'message.image <> "" and '.format(isimg) if isimg else ''
             # label = " and label like'%{}%'".format(label) if label else ''
 
-            sql = '''select message.*, section.name as section from message, section 
+            sql = '''select message.* from message 
             where message.groups = {} and message.mask & {} = {} and 
-            message.section = section.id order by message.status desc, message.ctime desc limit {},{}
+            order by message.status desc, message.ctime desc limit {},{}
             '''.format(groups, __MASK__, mask, pos, nums)
 
             cur.execute(sql)
